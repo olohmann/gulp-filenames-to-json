@@ -23,7 +23,7 @@ function gulpFilenamesToJson(options) {
             this.files = [];
         }
 
-        this.files.push(slash(path.relative(__dirname, file.path)));
+        this.files.push(slash(path.relative(file.cwd, file.path)));
 
         cb();
     }
