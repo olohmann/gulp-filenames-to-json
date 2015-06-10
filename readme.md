@@ -17,12 +17,17 @@ var gulp = require('gulp');
 var filenamesToJson = require('gulp-filenames-to-json');
 
 gulp.task('default', function () {
-	return gulp.src('src/file.ext')
+	return gulp.src('./js/**/*.js')
 		.pipe(filenamesToJson())
 		.pipe(gulp.dest('.'));
+    
+    // --> 
+    // creates a file "./files.json" with the following contents:
+    // ["js/fileA.js","js/fileB.js"]
 });
 ```
 
+For a full sample see [gulp-filenames-to-json-sample](https://github.com/olohmann/gulp-filenames-to-json-sample).
 
 ## API
 
