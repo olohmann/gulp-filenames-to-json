@@ -37,12 +37,12 @@ function gulpFileNamesToJson(options) {
             if (Array.isArray(options.ignore)) {
                 options.ignore.forEach(
                     function(pattern) {
-                        if (fileName.match(pattern)) {
+                        if (fileName.test(pattern)) {
                             ignore = true;
                         }
                     });
             } else if (options.ignore instanceof RegExp || typeof options.ignore === 'string') {
-                if (fileName.match(options.ignore)) {
+                if (fileName.test(options.ignore)) {
                     ignore = true;
                 }
             }
