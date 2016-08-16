@@ -42,6 +42,19 @@ Default: `files.json`
 
 The file name of the generated JSON document.
 
+##### base
+
+Type: `string`  
+Default: ``
+
+String to remove from left side of filename. e.g. providing `dist` to a match of `dist/file` would return `/file`.
+
+##### ignore
+
+Type: `string` or `Array`  
+Default: ``
+
+Filter regex string or array of  regex strings. If a filename matches, it will be ignored. 
 
 ## License
 
