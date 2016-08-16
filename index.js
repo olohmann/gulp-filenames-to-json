@@ -4,13 +4,14 @@ var through = require('through2');
 var gutil = require('gulp-util');
 var path = require('path');
 var slash = require('slash');
+var escapeStringRegexp = require('escape-string-regexp');
 
 var PluginError = gutil.PluginError;
 
 var PLUGIN_NAME = 'gulp-filenames-to-json';
 
-function gulpFilenamesToJson(options) {
-    if (typeof options === 'undefined') {
+function gulpFileNamesToJson(options) {
+    if (typeof options !== 'object') {
         options = {};
     }
 
@@ -23,18 +24,46 @@ function gulpFilenamesToJson(options) {
             this.files = [];
         }
 
-        this.files.push(slash(path.relative(file.cwd, file.path)));
+        var fileName = slash(path.relative(file.cwd, file.path)),
+            ignore = false;
 
+        if (options.base) {
+            fileName = fileName.replace(
+                new RegExp('^' + escapeStringRegexp(options.base + '/') + '?'), ''
+            );
+        }
+
+        if (options.ignore) {
+            if (Array.isArray(options.ignore)) {
+                options.ignore.forEach(
+                    function(pattern) {
+                        if (fileName.match(pattern)) {
+                            ignore = true;
+                        }
+                    });
+            } else if (options.ignore instanceof RegExp || typeof options.ignore === 'string') {
+                if (fileName.match(options.ignore)) {
+                    ignore = true;
+                }
+            }
+        }
+
+        if (ignore) {
+            cb();
+            return;
+        }
+
+        this.files.push(fileName);
         cb();
     }
 
     function flush(cb) {
         var file = new gutil.File({
-            cwd: '',
-            base: '',
-            path: path.join(options.fileName),
-            contents: new Buffer(JSON.stringify(this.files))
-        });
+                cwd: '',
+                base: '',
+                path: path.join(options.fileName),
+                contents: new Buffer(JSON.stringify(this.files))
+            });
 
         this.push(file);
         cb();
@@ -43,4 +72,4 @@ function gulpFilenamesToJson(options) {
     return through.obj(combine, flush);
 }
 
-module.exports = gulpFilenamesToJson;
+module.exports = gulpFileNamesToJson;
