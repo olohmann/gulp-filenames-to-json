@@ -19,11 +19,13 @@ function gulpFilenamesToJson(options) {
     }
 
     function combine(file, enc, cb) {
+        var cwd = options.cwd || file.cwd;
+
         if (typeof(this.files) === 'undefined') {
             this.files = [];
         }
 
-        this.files.push(slash(path.relative(file.cwd, file.path)));
+        this.files.push(slash(path.relative(cwd, file.path)));
 
         cb();
     }
@@ -31,7 +33,7 @@ function gulpFilenamesToJson(options) {
     function flush(cb) {
         var file = new gutil.File({
             cwd: '',
-            base: '',
+            base: 'app/',
             path: path.join(options.fileName),
             contents: new Buffer(JSON.stringify(this.files))
         });
