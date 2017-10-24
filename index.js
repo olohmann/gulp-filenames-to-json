@@ -33,7 +33,7 @@ function gulpFilenamesToJson(options) {
     function flush(cb) {
         var file = new gutil.File({
             cwd: '',
-            base: 'app/',
+            base: '',
             path: path.join(options.fileName),
             contents: new Buffer(JSON.stringify(this.files))
         });
