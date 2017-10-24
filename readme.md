@@ -42,6 +42,28 @@ Default: `files.json`
 
 The file name of the generated JSON document.
 
+##### cwd
+
+Type: `string`
+Default: [original, full file path]
+
+Portion of file paths to be excluded in the JSON
+
+```js
+gulp.task('default', function () {
+    return gulp.src('./app/js/**/*.js')
+        .pipe(filenamesToJson({
+            cwd: 'app/'    
+        }))
+        .pipe(gulp.dest('.'));
+    
+    // --> 
+    // transforms
+    // ["app/js/fileA.js","app/js/fileB.js"]
+    // to
+    // ["js/fileA.js","js/fileB.js"]
+});
+```
 
 ## License
 
